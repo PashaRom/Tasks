@@ -1,0 +1,5 @@
+{
+  "connectionStrings": {
+    "unionReporting": "server=localhost;UserId=;Password=;database=union_reporting;"
+  }
+}
