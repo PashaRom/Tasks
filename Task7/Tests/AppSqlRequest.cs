@@ -5,14 +5,16 @@ using Task7.Tests.Models;
 using Task7.Context.AppDbContext;
 using Task7.Utilities;
 using Task7.Utilities.Logging;
+using Task7.Utilities.Configuration;
 namespace Task7.Tests
 {
     public class AppSqlRequest
-    {
-        private static AppDbContext context = new AppDbContext();
-        public static bool GetMinWorkingTimeTest()
+    {       
+        public static List<WorkingTime> GetMinWorkingTimeTest()
         {
-            try { 
+            AppDbContext context = new AppDbContext();
+            try 
+            { 
                 var workingTimes = context.Projects.Join(context.Tests,
                     project => project.Id,
                     test => test.ProjectId,
@@ -20,28 +22,27 @@ namespace Task7.Tests
                     {
                         Project = project.Name,
                         Test = test.Name,
-                        MinimumWorkingTime = (test.EndTime.HasValue && test.StartTime.HasValue) ? (test.EndTime - test.StartTime).Value.TotalSeconds : -1
+                        MinimumWorkingTime = (test.EndTime.HasValue && test.StartTime.HasValue) ? (test.EndTime - test.StartTime).Value.TotalSeconds.ToString() : ""
                     })
                     .ToList()
-                    .Where(workingTime => workingTime.MinimumWorkingTime != -1)
+                    .Where(workingTime => !workingTime.MinimumWorkingTime.Equals(""))
                     .OrderBy(workingTime => workingTime.Project)
-                    .ThenBy(workingTime => workingTime.Test);           
-                ExcelUtil.Write<WorkingTime>(workingTimes, 1, "Minimum working test's time");
-                if (workingTimes.Count() > 0)
-                    return true;
-                else
-                    return false;
+                    .ThenBy(workingTime => workingTime.Test)
+                    .ToList();                
+                return workingTimes;
             }
             catch(Exception ex)
             {
                 Log.Error(ex, "Unexpected error occurred during executing AppSqlRequest.GetMinWorkingTimeTest().");
-                return false;
+                return null;
             }
         }
 
-        public static bool GetNumberOfTestsInProject()
+        public static List<NumberOfTestsInProject> GetNumberOfTestsInProject()
         {
-            try { 
+            AppDbContext context = new AppDbContext();
+            try 
+            { 
                 var countTests = context.Projects.Join(context.Tests,
                     project => project.Id,
                     test => test.ProjectId,
@@ -55,23 +56,22 @@ namespace Task7.Tests
                         Project = group.Key,
                         TestsCount = group.Count()
                     })
-                    .OrderBy(numberOfTestsInProject => numberOfTestsInProject.TestsCount);
-                ExcelUtil.Write<NumberOfTestsInProject>(countTests, 2, "Number of test in project");
-                if (countTests.Count() > 0)
-                    return true;
-                else
-                    return false;
+                    .OrderBy(numberOfTestsInProject => numberOfTestsInProject.TestsCount)
+                    .ToList();                
+                return countTests;
             }
             catch (Exception ex)
             {
                 Log.Error(ex, "Unexpected error occurred during executing AppSqlRequest.NumberOfTestsInProject().");
-                return false;
+                return null;
             }
         }
 
-        public static bool GetExecutedTestsAfterParticularDate(string dateFrom)
+        public static List<TestsInProject> GetExecutedTestsAfterParticularDate(string dateFrom)
         {
-            try { 
+            AppDbContext context = new AppDbContext();
+            try 
+            { 
                 DateTime executedDate = DateTime.Parse(dateFrom);
                 var testsInProjects = context.Projects.Join(context.Tests,
                     project => project.Id,
@@ -84,24 +84,23 @@ namespace Task7.Tests
                     })
                     .Where(test => test.Date.Value.Date > executedDate.Date)                    
                     .OrderBy(testProject => testProject.Project)
-                    .ThenBy(testProject => testProject.Test);
-                ExcelUtil.Write<TestsInProject>(testsInProjects, 3, "Tests in project");
-                if (testsInProjects.Count() > 0)
-                    return true;
-                else
-                    return false;
+                    .ThenBy(testProject => testProject.Test)
+                    .ToList();                
+                return testsInProjects;
             }
             catch (Exception ex)
             {
                 Log.Error(ex, "Unexpected error occurred during executing AppSqlRequest.TestExecutedAfterParticularDate.");
-                return false;
+                return null;
             }
         }
 
-        public static bool GetNumberOfTestExecutedParticularBrowsers(List<string> browsersName)
+        public static List<NumberOfBrowsers> GetNumberOfTestExecutedParticularBrowsers(List<string> browsersName)
         {
-            try { 
-                var testExecuteBrowser = context.Projects.Join(context.Tests,
+            AppDbContext context = new AppDbContext();            
+            try 
+            {
+                List<NumberOfBrowsers> testExecuteBrowser = context.Projects.Join(context.Tests,
                     project => project.Id,
                     test => test.ProjectId,
                     (project, test) => new
@@ -113,18 +112,23 @@ namespace Task7.Tests
                     .Select(group => new NumberOfBrowsers
                     {
                         Browser = group.Count()
-                    });                
-                ExcelUtil.Write<NumberOfBrowsers>(testExecuteBrowser, 4, "Number of browsers");
-                if (testExecuteBrowser.Count() > 0)
-                    return true;
-                else
-                    return false;
+                    })
+                    .ToList();
+                return testExecuteBrowser;
             }
             catch (Exception ex)
             {
                 Log.Error(ex, "Unexpected error occurred during executing AppSqlRequest.TestExecutedAfterParticularDate.");
-                return false;
+                return null;
             }
+        }
+
+        public static void RespondWriteToFiles()
+        {
+            ExcelUtil.Write<WorkingTime>(GetMinWorkingTimeTest(), 1, "Minimum working test's time");            
+            ExcelUtil.Write<NumberOfTestsInProject>(GetNumberOfTestsInProject(), 2, "Number of test in project");            
+            ExcelUtil.Write<TestsInProject>(GetExecutedTestsAfterParticularDate(ConfigurationManager.TestData.Get<string>("dateFrom")), 3, "Tests in project");            
+            ExcelUtil.Write<NumberOfBrowsers>(GetNumberOfTestExecutedParticularBrowsers(ConfigurationManager.TestData.GetSectionWithArray<string>("browsers")), 4, "Number of browsers");            
         }
     }
 }

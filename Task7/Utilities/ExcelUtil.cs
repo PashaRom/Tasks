@@ -10,6 +10,7 @@ namespace Task7.Utilities
 {
     public static class ExcelUtil
     {
+        private static string pathOutFile = String.Empty; 
         public static void Write<T>(IEnumerable<T> objs, int sheetNumber, string sheetName)
         {            
             Type typeObject = typeof(T);
@@ -17,19 +18,19 @@ namespace Task7.Utilities
                 | BindingFlags.Instance
                 | BindingFlags.Public);
             Excel.Application applicationExcel = new Excel.Application();
+            Excel.Workbook workbook = null;
             try
             {
                 string pathDirectory = $"{Directory.GetCurrentDirectory()}\\Out";
                 if (!Directory.Exists(pathDirectory))
                     Directory.CreateDirectory(pathDirectory);
                 string outFile = "\\testeddata.xlsx";
-                string path = $"{pathDirectory}{outFile}";
-                Excel.Workbook workbook;
-                bool flagExistFile = File.Exists(path);
+                pathOutFile = $"{pathDirectory}{outFile}";                
+                bool flagExistFile = File.Exists(pathOutFile);
                 if (!flagExistFile)
                     workbook = applicationExcel.Workbooks.Add();
                 else
-                    workbook = applicationExcel.Workbooks.Open(path);
+                    workbook = applicationExcel.Workbooks.Open(pathOutFile);
                 Excel.Worksheet worksheet;
                 if (workbook.Worksheets.Count < sheetNumber)
                     worksheet = workbook.Worksheets.Add(After: workbook.Sheets[workbook.Sheets.Count]) as Excel.Worksheet;
@@ -61,11 +62,9 @@ namespace Task7.Utilities
                     counterRow++;
                 }                
                 if (!flagExistFile)
-                    workbook.SaveAs(path);
+                    workbook.SaveAs(pathOutFile);
                 else
-                    workbook.Save();
-                workbook.Close(false);
-                Marshal.ReleaseComObject(workbook);
+                    workbook.Save();                
             }
             catch (Exception ex) 
             {
@@ -73,9 +72,11 @@ namespace Task7.Utilities
             }
             finally 
             {
+                workbook.Close(false);                
                 applicationExcel.Quit();
+                Marshal.ReleaseComObject(workbook);
                 Marshal.ReleaseComObject(applicationExcel);
             }
-        }
+        }           
     }
 }
