@@ -1,0 +1,12 @@
+{
+  "url": "https://vk.com/",
+  "apiUrl": "https://api.vk.com/method/",
+  "versionVkApi": "5.124",
+  "autorizationData": {
+    "email": "",
+    "password": "",
+    "token": "",
+    "clientId": 
+  },
+  "userId": 
+}
