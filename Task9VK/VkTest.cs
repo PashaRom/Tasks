@@ -33,10 +33,10 @@ namespace Task9VK
                 "The created post Id have got value null.");
             Logger.Step(5, "Get the message created post and the created user by UI.");
             MyPage myPage = new MyPage();            
-            Assert.IsTrue(myPage.GetPostMessage(createdPost.Id).Equals(createdPost.Message),//createdPost.Message.Equals(createdPostMessage)
+            Assert.IsTrue(myPage.GetPostMessage(createdPost.Id).Equals(createdPost.Message),
                 "The created post message is different the message from wall.");            
             Assert.AreEqual(
-                ConfigurationManager.Configuration.Get<int>("userId"), myPage.GetPostAutorId(createdPost.Id));//postAuthorId
+                ConfigurationManager.Configuration.Get<int>("userId"), myPage.GetPostAutorId(createdPost.Id));
             Logger.Step(6, $"Edit the post \"{createdPost.Id}\" by API.");
             Photo uploadPhoto = VkApiRequest.UploadPhoto();
             Post editedPost = VkApiRequest.EditPost(createdPost.Id, uploadPhoto);
@@ -44,14 +44,14 @@ namespace Task9VK
             string editedPostMessage = myPage.GetPostMessage(createdPost.Id);            
             Assert.IsTrue(editedPost.Message.Equals(editedPostMessage),
                 $"The post message has not been changed. The expected post message \"{editedPost.Message}\". The actual post message \"{editedPostMessage}\"");
-            Assert.AreEqual(uploadPhoto.Id, myPage.GetPostImageId(createdPost.Id, uploadPhoto.Id),//imageId
+            Assert.AreEqual(uploadPhoto.Id, myPage.GetPostImageId(createdPost.Id, uploadPhoto.Id),
                 "The post image has not been upload or are different.");
             Logger.Step(8, "Add a comment to the post by API.");
             Comment createdComment = VkApiRequest.CreateComment(createdPost.Id);
             myPage.ClickLinkShowComment(createdPost.Id);            
             string createdPostCommentMessage = myPage.GetPostCommentMessage(createdComment.Id);
             Logger.Step(9, "Verify the created post comment and the comment author.");
-            Assert.AreEqual(ConfigurationManager.Configuration.Get<int>("userId"), myPage.GetPostCommentAuthor(createdComment.Id),//postCommentAutor
+            Assert.AreEqual(ConfigurationManager.Configuration.Get<int>("userId"), myPage.GetPostCommentAuthor(createdComment.Id),
                 "The current authot is different the post comment author by UI.");
             Assert.IsTrue(createdComment.Message.Equals(createdPostCommentMessage),
                 $"The generate post comment message \"{createdComment.Message}\" and the post comment message \"{createdPostCommentMessage}\" was different.");
