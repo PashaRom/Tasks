@@ -1,3 +1,4 @@
+using System;
 using NUnit.Framework;
 using Test.Configuration;
 using Aquality.Selenium.Browsers;
@@ -64,8 +65,7 @@ namespace Task9VK
             VkApiRequest.DeletePost(createdPost.Id);
             Logger.Step(13, $"Veryfy the post \"{createdPost.Id}\" has been deleted.");            
             Assert.IsFalse(myPage.IsDeletedPost(createdPost.Id),
-                $"The post \"{createdPost.Id}\" has not been delete.");
-            Assert.Pass();
+                $"The post \"{createdPost.Id}\" has not been delete.");           
         }
 
         [OneTimeTearDown]

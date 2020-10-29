@@ -9,7 +9,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\AqualitySeleniumDotnet\aquality-selenium-dotnet\Aquality.Selenium\src\Aquality.Selenium\Aquality.Selenium.csproj" />
     <ProjectReference Include="..\Configuration\Configuration.csproj" />
   </ItemGroup>
 
