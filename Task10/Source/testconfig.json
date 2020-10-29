@@ -1,0 +1,15 @@
+{
+  "basicAuth": {
+    "url": "https://httpbin.org/basic-auth/user/passwd",
+    "cred": {
+      "login": "user",
+      "password": "passwd"
+    }
+  },
+  "cookie": {
+    "url": "http://example.com/"
+  },
+  "modalWindows": {
+    "url": "http://the-internet.herokuapp.com/javascript_alerts"
+  }
+}
