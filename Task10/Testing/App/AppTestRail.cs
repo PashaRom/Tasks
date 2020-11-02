@@ -12,10 +12,17 @@ namespace Task10.Testing.App
         private static TestRailClient railClient;
         static AppTestRail()
         {
-            railClient = new TestRailClient(
-                ConfigurationManager.Configuration.Get<string>("testRail:pathUrlBeforeMethod"),
-                ConfigurationManager.Configuration.Get<string>("testRail:cred:login"),
-                ConfigurationManager.Configuration.Get<string>("testRail:cred:password")); 
+            try
+            {
+                railClient = new TestRailClient(
+                    ConfigurationManager.Configuration.Get<string>("testRail:pathUrlBeforeMethod"),
+                    ConfigurationManager.CredOfUser.Get<string>("cred:login"),
+                    ConfigurationManager.CredOfUser.Get<string>("cred:password"));
+            }
+            catch(Exception ex)
+            {
+                AqualityServices.Logger.Fatal($"The error appeared during creating {nameof(TestRailClient)} \"{ex.Message}\"", ex);
+            }
         }
     
         public static void SendResult(string comment, string defect, string testStatus, Dictionary<string,string> testSteps, string screenShotPath)

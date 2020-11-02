@@ -3,13 +3,14 @@ using Aquality.Selenium.Browsers;
 using Testing.Configuration;
 using Task10.Testing.App;
 using Utilities;
-using Task10.Testing.PageObject.MadalWindows;
+using Task10.Testing.PageObject;
 using System.Collections.Generic;
 namespace Task10
 {
-    public class AllTests
+    public class Tests
     {
         private static Dictionary<string, string> testSteps = new Dictionary<string, string>();
+        
         [SetUp]
         public void Setup()
         {
@@ -63,7 +64,7 @@ namespace Task10
                 jsAlertsPage.GetTextResult(),
                 "The text of result was different.");
             Logger.Step(5, $"Click the button \"{jsAlertsPage.jsPromptButton.Name}\".");
-            Logger.Step(3, $"Click the button \"{jsAlertsPage.jsPromptButton.Name}\".");
+            testSteps.Add($"Click the button \"{jsAlertsPage.jsPromptButton.Name}\"", "The prompt modal window has the text \"I am a JS Confirm\"");
             jsAlertsPage.jsPromptButton.Click();
             jsAlertsPage.SwitchToModalWindow();
             Assert.AreEqual(

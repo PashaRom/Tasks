@@ -30,10 +30,13 @@
     <None Update="Source\testdata.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Source\usercred.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Testing\Models\TestRail\" />
+    <Folder Include="Log\" />
   </ItemGroup>
 
 </Project>

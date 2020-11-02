@@ -28,72 +28,63 @@ namespace Task10.TestRail
         {
             var projectTask = TestRailApiUtil.Get<Project>(BuildUri("get_project", 140), authBase64);
             projectTask.Wait();
-            Project project = projectTask.Result;
-            return project;
+            return projectTask.Result;            
         }
 
         public Suite AddSuit(string name, string description, int projectId)
         {
             SuiteCreatingRequest suitCreating = new SuiteCreatingRequest { Name = name, Description = description };
             var creartedSuitTask = TestRailApiUtil.Post<SuiteCreatingRequest, Suite>(BuildUri("add_suite", projectId),authBase64, suitCreating);
-            creartedSuitTask.Wait();
-            Suite suit = creartedSuitTask.Result;
-            return suit;
+            creartedSuitTask.Wait();            
+            return creartedSuitTask.Result;
         }
 
         public Section AddSection(SectionCreatingRequest sectionCreating, int projectId)
         {
             var createdSectionTask = TestRailApiUtil.Post<SectionCreatingRequest, Section>(BuildUri("add_section", projectId), authBase64, sectionCreating);
-            createdSectionTask.Wait();
-            Section section = createdSectionTask.Result;
-            return section;
+            createdSectionTask.Wait();            
+            return createdSectionTask.Result;
         }
 
         public Case AddCase(CaseCreatingRequest caseCreating, int? sectionId)
         {
             var createdCaseTask = TestRailApiUtil.Post<CaseCreatingRequest, Case>(BuildUri("add_case", sectionId), authBase64, caseCreating);
-            createdCaseTask.Wait();
-            Case createdCase = createdCaseTask.Result;
-            return createdCase;
+            createdCaseTask.Wait();            
+            return createdCaseTask.Result;
         }
         public Run AddRun(RunCreatingRequest runCreating, int projectId)
         {
             var createdRunTask = TestRailApiUtil.Post<RunCreatingRequest, Run>(BuildUri("add_run", projectId), authBase64, runCreating);
-            createdRunTask.Wait();
-            Run run = createdRunTask.Result;
-            return run;
+            createdRunTask.Wait();            
+            return createdRunTask.Result;
         }
         
         public List<Test> GetTests(int? runId)
         {
             var gettingTestsTask = TestRailApiUtil.Get<List<Test>>(BuildUri("get_tests", runId), authBase64);
-            gettingTestsTask.Wait();
-            List<Test> tests = gettingTestsTask.Result;
-            return tests;
+            gettingTestsTask.Wait();           
+            return gettingTestsTask.Result;
         }
 
         public List<Status> GetStatuses()
         {
             var gettingStatusesTask = TestRailApiUtil.Get<List<Status>>(BuildUri("get_statuses"),authBase64);
-            gettingStatusesTask.Wait();
-            List<Status> statuses = gettingStatusesTask.Result;
-            return statuses;
+            gettingStatusesTask.Wait();            
+            return gettingStatusesTask.Result;
         }
         
         public Result AddResult(ResultCreatingRequest resultCreating, int? testId)
         {
             var createdResultTask = TestRailApiUtil.Post<ResultCreatingRequest, Result>(BuildUri("add_result", testId), authBase64, resultCreating);
-            createdResultTask.Wait();
-            Result result = createdResultTask.Result;
-            return result;
+            createdResultTask.Wait();            
+            return createdResultTask.Result;
         }
         
         public AttachmentResponse AddAttachmentToResult(string filePath, int? resultId)
         {
             var attachmentTask = TestRailApiUtil.UploadImagePost<AttachmentResponse>(BuildUri("add_attachment_to_result", resultId), authBase64, filePath);
-            attachmentTask.Wait();
-            AttachmentResponse attachmentResponse = attachmentTask.Result;
-            return attachmentResponse;
+            attachmentTask.Wait();            
+            return attachmentTask.Result;
         }
     }
 }

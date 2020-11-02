@@ -1,26 +1,27 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using Testing.Configuration.Common;
-using Aquality.Selenium.Browsers;
 namespace Testing.Configuration
 {
     public static class ConfigurationManager
     {
-        public static ConfigurationGetter Configuration;
-        public static ConfigurationGetter TestingData;
-        
-        static ConfigurationManager() 
+        private static readonly string fileConfigPath = $"{Directory.GetCurrentDirectory()}\\Source\\testconfig.json";
+        private static readonly string fileDataPath = $"{Directory.GetCurrentDirectory()}\\Source\\testdata.json";
+        private static readonly string fileUserCredPath = $"{Directory.GetCurrentDirectory()}\\Source\\usercred.json";
+        public static readonly ConfigurationGetter Configuration;
+        public static readonly ConfigurationGetter TestingData;
+        public static readonly ConfigurationGetter CredOfUser;
+
+        static ConfigurationManager()
         {
-            try 
-            {
-                bool file = File.Exists($"{Directory.GetCurrentDirectory()}\\Source\\testconfig.json");
-                Configuration = new ConfigurationGetter($"{Directory.GetCurrentDirectory()}\\Source\\testconfig.json");            
-                TestingData = new ConfigurationGetter($"{Directory.GetCurrentDirectory()}\\Source\\testdata.json");
-            }
-            catch(Exception ex)
-            {
-                AqualityServices.Logger.Fatal("Unexpected error occurred during creating ConfigurationManager.", ex);
-            }
-        }        
+            Configuration = !File.Exists($"{fileConfigPath}") ?
+                throw new FileNotFoundException($"The file which path \"{fileConfigPath}\" did not find.") :
+                new ConfigurationGetter($"{fileConfigPath}");
+            TestingData = !File.Exists($"{fileDataPath}") ?
+                throw new FileNotFoundException($"The file which path \"{fileDataPath}\" did not find.") :
+                new ConfigurationGetter($"{fileDataPath}");
+            CredOfUser = !File.Exists($"{fileUserCredPath}") ?
+                throw new FileNotFoundException($"The file which path \"{fileUserCredPath}\" did not find.") :
+                new ConfigurationGetter($"{fileUserCredPath}");
+        }
     }   
 }

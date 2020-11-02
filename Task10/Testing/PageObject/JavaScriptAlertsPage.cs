@@ -2,7 +2,7 @@
 using OpenQA.Selenium;
 using Aquality.Selenium.Browsers;
 using Aquality.Selenium.Elements.Interfaces;
-namespace Task10.Testing.PageObject.MadalWindows
+namespace Task10.Testing.PageObject
 {
     public class JavaScriptAlertsPage
     {       

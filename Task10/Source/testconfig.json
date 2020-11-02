@@ -14,11 +14,7 @@
     "screenshotName": "finishScreenshot.png"
   },
   "testRail": {
-    "pathUrlBeforeMethod": "https://tr.a1qa.com/index.php?/api/v2/",
-    "cred": {
-      "login": "p.romash",
-      "password": "A1QEstudy1981!"
-    },
+    "pathUrlBeforeMethod": "https://tr.a1qa.com/index.php?/api/v2/",    
     "projectId": 140,
     "suiteId": 0,
     "caseId": 0,
