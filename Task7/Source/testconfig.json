@@ -1,0 +1,14 @@
+{
+  "connectionStrings": {
+    "unionReporting": "server=localhost;UserId=Pavel;Password=Pashar1981!;database=union_reporting;"
+  },
+  "files": {
+    "excel": "testeddata",
+    "json": {
+      "minWorkingTime": "workingTimes.json",
+      "countTests": "countTests.json",
+      "testsInProject": "testsInProject.json",
+      "numberOfBrowsers": "numberOfBrowsers.json"
+    }
+  }
+}
