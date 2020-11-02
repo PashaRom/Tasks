@@ -1,70 +1,20 @@
 using NUnit.Framework;
 using Aquality.Selenium.Browsers;
-using Test.Configuration;
+using Testing.Configuration;
 using Task10.Testing.App;
-using Task10.Testing.Models.BasicAuth;
-using Task10.Testing.Models.Cookies;
-using Task10.Testing.PageObject.CookiePage;
 using Utilities;
 using Task10.Testing.PageObject.MadalWindows;
+using System.Collections.Generic;
 namespace Task10
 {
     public class AllTests
     {
+        private static Dictionary<string, string> testSteps = new Dictionary<string, string>();
         [SetUp]
         public void Setup()
         {
+            testSteps.Clear();
             AqualityServices.Browser.Maximize();
-        }
-
-        [Test]
-        public void BasicAuthorization()
-        {
-            var authResponseTask = AppWebRequest.BasicAutorization();
-            authResponseTask.Wait();
-            AuthResponse authResponse = authResponseTask.Result;            
-            Assert.AreEqual(
-                ConfigurationManager.TestingData.Get<bool>("basicAuth:response:authenticated"),
-                authResponse.Authenticated,
-                $"The param \"authenticated\" has different value.");
-            Assert.AreEqual(
-                ConfigurationManager.TestingData.Get<string>("basicAuth:response:user"),
-                authResponse.User,
-                $"The param \"user\" has different value.");            
-        }
-
-        [Test]
-        public void WorkingWithCookie()
-        {            
-            Logger.Step(1, $"Go to the web resource \"{ConfigurationManager.Configuration.Get<string>("cookie:url")}\".");
-            AqualityServices.Browser.GoTo(ConfigurationManager.Configuration.Get<string>("cookie:url"));
-            AqualityServices.Browser.WaitForPageToLoad();
-            HomePage homePage = new HomePage();
-            Assert.IsTrue(
-                homePage.ExistHeaderLabel,
-                $"Home page \"{ConfigurationManager.Configuration.Get<string>("cookie:url")}\" has not been loaded.");
-            Logger.Step(2, "Add cookies");
-            AppWorkingCookies.SetCookies();
-            CollectionAssert.AreEqual(
-                AppWorkingCookies.AppCookies,
-                AppWorkingCookies.GetCookies(),
-                "Cookies have not been added.");
-            Logger.Step(3, $"Delete cookie with key=.{(ConfigurationManager.TestingData.Get<string>("deleteCookie"))}");
-            AppWorkingCookies.DeleteCookieNamed();
-            CollectionAssert.AreEqual(
-                AppWorkingCookies.AppCookies,
-                AppWorkingCookies.GetCookies(),
-                "Cookie has not been deleted.");
-            Logger.Step(4, $"Add value into Cookie ={ConfigurationManager.TestingData.GetObjectParam<AppCookie>("addValueCookie")}");
-            (string Expected, string Actual) cookiesValue = AppWorkingCookies.AddValueCookie();
-            Assert.AreEqual(
-                cookiesValue.Expected,
-                cookiesValue.Actual,
-                $"The cookie's value has not been added.");
-            Logger.Step(5, "Delete cookies");
-            Assert.IsTrue(
-                AppWorkingCookies.DeleteCookies(),
-                $"The cookies have not been deleted");
         }
 
         [Test]
@@ -74,24 +24,27 @@ namespace Task10
             AqualityServices.Browser.GoTo(ConfigurationManager.Configuration.Get<string>("modalWindows:url"));
             AqualityServices.Browser.WaitForPageToLoad();
             JavaScriptAlertsPage jsAlertsPage = new JavaScriptAlertsPage();
-            Logger.Step(1, $"Click the button \"{jsAlertsPage.jsAlertButton.Name}\".");            
+            Logger.Step(1, $"Click the button \"{jsAlertsPage.jsAlertButton.Name}\".");
+            testSteps.Add($"Click the button \"{jsAlertsPage.jsAlertButton.Name}\"", "The alert modal window has the text \"I am a JS Alert\"");
             jsAlertsPage.jsAlertButton.Click();
             jsAlertsPage.SwitchToModalWindow();            
             Assert.AreEqual(
                 ConfigurationManager.TestingData.Get<string>("modalWindows:alert:text"),
                 jsAlertsPage.ModalWindow.Text,
-                "The text in the alert modal window was differetn.");
-            Logger.Step(2, $"Click the button \"OK\" in the alert modal window.");            
+                "The text in the alert modal window was differetn.");            
+            Logger.Step(2, "Click the button \"OK\" in the alert modal window.");
+            testSteps.Add("Click the button \"OK\" in the alert modal window.", "The alert modal window has closed and the text \"You successfuly clicked an alert\" has been appeared in the aria \"Result\".");
             jsAlertsPage.ModalWindow.Accept();
             jsAlertsPage.SwitchToModalWindow();
             Assert.IsNull(
                 jsAlertsPage.ModalWindow,
-                "The alert modal window has not been clossed.");
+                "The alert modal window has not been clossed.");            
             Assert.AreEqual(
                 ConfigurationManager.TestingData.Get<string>("modalWindows:textResult:alert"),
                 jsAlertsPage.GetTextResult(),
-                "The text of result was different.");
+                "The text of result was different.");            
             Logger.Step(3, $"Click the button \"{jsAlertsPage.jsConfirmButton.Name}\".");
+            testSteps.Add($"Click the button \"{jsAlertsPage.jsConfirmButton.Name}\"", "The confirm modal window has the text \"I am a JS Confirm\"");
             jsAlertsPage.jsConfirmButton.Click();
             jsAlertsPage.SwitchToModalWindow();
             Assert.AreEqual(
@@ -99,6 +52,7 @@ namespace Task10
                 jsAlertsPage.ModalWindow.Text,
                 "The text in the confirm modal window was different.");
             Logger.Step(4, $"Click the button \"OK\" in the confirm modal window.");
+            testSteps.Add("Click the button \"OK\" in the confirm modal window.", "The confirm modal window has closed and the text \"You clicked: Ok\" has been appeared in the aria \"Result\".");
             jsAlertsPage.ModalWindow.Accept();
             jsAlertsPage.SwitchToModalWindow();
             Assert.IsNull(
@@ -109,6 +63,7 @@ namespace Task10
                 jsAlertsPage.GetTextResult(),
                 "The text of result was different.");
             Logger.Step(5, $"Click the button \"{jsAlertsPage.jsPromptButton.Name}\".");
+            Logger.Step(3, $"Click the button \"{jsAlertsPage.jsPromptButton.Name}\".");
             jsAlertsPage.jsPromptButton.Click();
             jsAlertsPage.SwitchToModalWindow();
             Assert.AreEqual(
@@ -117,6 +72,7 @@ namespace Task10
                 "The text in the prompt modal window was different.");
             Logger.Step(6, "Send the text to the prompt modal window and click the button \"OK\".");
             string generatedText = StringUtil.GeneraterText(15);
+            testSteps.Add("Click the button \"OK\" in the prompt modal window.", $"The prompt modal window has closed and the text \"You entered: {generatedText}\" has been appeared in the aria \"Result\".");            
             jsAlertsPage.ModalWindow.SendKeys(generatedText);
             jsAlertsPage.ModalWindow.Accept();
             jsAlertsPage.SwitchToModalWindow();
@@ -132,6 +88,12 @@ namespace Task10
         [TearDown]
         public void TearDown()
         {
+            AppTestRail.SendResult(
+                TestContext.CurrentContext.Test.Name,
+                TestContext.CurrentContext.Result.Message,
+                TestContext.CurrentContext.Result.Outcome.Status.ToString(),
+                testSteps,
+                FileUtil.TakeScreenshot(AqualityServices.Browser.Driver, ConfigurationManager.Configuration.Get<string>("modalWindows:screenshotName")));            
             AqualityServices.Browser.Quit();
         }
     }

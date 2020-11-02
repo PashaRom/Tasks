@@ -1,8 +1,8 @@
 ﻿using System;
 using System.IO;
-using Test.Configuration.Common;
+using Testing.Configuration.Common;
 using Aquality.Selenium.Browsers;
-namespace Test.Configuration
+namespace Testing.Configuration
 {
     public static class ConfigurationManager
     {
@@ -12,7 +12,8 @@ namespace Test.Configuration
         static ConfigurationManager() 
         {
             try 
-            {                
+            {
+                bool file = File.Exists($"{Directory.GetCurrentDirectory()}\\Source\\testconfig.json");
                 Configuration = new ConfigurationGetter($"{Directory.GetCurrentDirectory()}\\Source\\testconfig.json");            
                 TestingData = new ConfigurationGetter($"{Directory.GetCurrentDirectory()}\\Source\\testdata.json");
             }

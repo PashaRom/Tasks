@@ -3,16 +3,16 @@ using System.Dynamic;
 using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
 using Aquality.Selenium.Browsers;
-namespace Test.Configuration.Common
+namespace Testing.Configuration.Common
 {
     public class ConfigurationGetter
     {
         public readonly string PathToFile;
         public ConfigurationGetter(string fileName)
-        {
-            PathToFile = fileName;
-            var builder = new ConfigurationBuilder().AddJsonFile(fileName);
-            GetConfiguration = builder.Build();            
+        {            
+                PathToFile = fileName;
+                var builder = new ConfigurationBuilder().AddJsonFile(fileName);
+                GetConfiguration = builder.Build();            
         }
         public IConfiguration GetConfiguration { get; }
 
