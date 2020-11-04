@@ -12,9 +12,13 @@ namespace Utilities.VkApiUtility
     public static class VkApiUtils
     {
         private static readonly HttpClient httpClient = new HttpClient();
-        public static HttpStatusCode StatusCode = 0;
-        public static string MediaType = String.Empty;
-        public static long? ContentLenght = 0;
+        private static HttpStatusCode statusCode = 0;
+        public static HttpStatusCode StatusCode => statusCode;
+        private static string mediaType = String.Empty;
+        public static string MediaType => mediaType;
+        private static long? contentLenght = 0;
+        public static long? ContentLenght => contentLenght;
+        public static bool IsNullResponseError => VkResponseError.Error == null;
         public static VkResponseError VkResponseError = new VkResponseError();
 
         public static void Initialization(string uri)
@@ -29,9 +33,9 @@ namespace Utilities.VkApiUtility
             try
             {                
                 HttpResponseMessage streamTask = await httpClient.GetAsync(urn);
-                StatusCode = streamTask.StatusCode;
-                MediaType = streamTask.Content.Headers.ContentType.MediaType;
-                ContentLenght = streamTask.Content.Headers.ContentLength;                
+                statusCode = streamTask.StatusCode;
+                mediaType = streamTask.Content.Headers.ContentType.MediaType;
+                contentLenght = streamTask.Content.Headers.ContentLength;                
                 VkResponseError.Error = null;
                 VkResponseError = JsonSerializer.Deserialize<VkResponseError>(streamTask.Content.ReadAsStringAsync().Result);                
                 return await JsonSerializer.DeserializeAsync<T>(await streamTask.Content.ReadAsStreamAsync());
@@ -51,25 +55,14 @@ namespace Utilities.VkApiUtility
             imageContent.Headers.ContentType = MediaTypeHeaderValue.Parse(mediaType);
             multipartFormData.Add(imageContent, "photo", Path.GetFileName(filePath));
             HttpResponseMessage response = await httpClient.PostAsync(url, multipartFormData);
-            StatusCode = response.StatusCode;
-            MediaType = response.Content.Headers.ContentType.MediaType;            
+            statusCode = response.StatusCode;
+            mediaType = response.Content.Headers.ContentType.MediaType;            
             VkResponseError.Error = null;
             var vkResponseErrorStream = await response.Content.ReadAsStreamAsync();
             var VkResponseErrorDesTask = JsonSerializer.DeserializeAsync<VkResponseError>(vkResponseErrorStream);
             VkResponseError = VkResponseErrorDesTask.Result;
             vkResponseErrorStream.Position = 0;
             return await JsonSerializer.DeserializeAsync<T>(vkResponseErrorStream);//await response.Content.ReadAsStreamAsync()
-        }
-
-        public static bool IsNullResponseError
-        {
-            get 
-            {
-                if (VkResponseError.Error == null)
-                    return true;
-                else
-                    return false;
-            }
         }
     }
 }

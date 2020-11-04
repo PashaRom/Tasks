@@ -13,19 +13,19 @@ namespace Task9VK
 {
     public static class VkApiRequest
     {       
-        private static string RerequiredParam => $"&access_token={ConfigurationManager.Configuration.Get<string>("autorizationData:token")}" +
+        private static string RerequiredParam => $"&access_token={ConfigurationManager.CredOfUser.Get<string>("autorizationData:token")}" +
             $"&v={ConfigurationManager.Configuration.Get<string>("versionVkApi")}";
         static VkApiRequest()
         {
             VkApiUtils.Initialization(ConfigurationManager.Configuration.Get<string>("apiUrl"));
         }
 
-        public static Post CreatePost()
+        public static Post CreatePost(string textOfPost)
         {
             Post createdPost = new Post();
+            createdPost.Message = textOfPost;
             try 
-            { 
-                createdPost.Message = StringUtil.GeneraterText(50);            
+            {                             
                 string urnCreatePost = $"wall.post?" +
                     $"message={createdPost.Message}" +
                     $"{RerequiredParam}";
@@ -47,38 +47,14 @@ namespace Task9VK
             }
         }
 
-        public static Photo UploadPhoto()
+        public static Photo UploadPhoto(int userId, string directoryPath, string fileName)
         {
             Photo photo = new Photo();
             try 
-            { 
-                string urnUploadAddress = $"photos.getWallUploadServer?" +
-                    $"{RerequiredParam}";
-                AqualityServices.Logger.Info($"Get the download photos address by urn : \"{urnUploadAddress}\".");
-                var vkResponseUploadUrlTask = VkApiUtils.GetTAsync<VkResponse>(urnUploadAddress);
-                vkResponseUploadUrlTask.Wait();
-                AqualityServices.Logger.Info($"The photos download address returned status code {Convert.ToInt32(VkApiUtils.StatusCode)} and the respons lenght = {VkApiUtils.ContentLenght}");
-                VerifyVkApiResponseError();
-                WallUploadServer wallUploadServer = WallUploadServer.Convert(vkResponseUploadUrlTask.Result.Response);                
-                var vkResponseUpLoadPhotoTask = VkApiUtils.PostImage<UploadServer>(
-                     wallUploadServer.UploadUrl, 
-                    $"{Directory.GetCurrentDirectory()}\\Source\\TestingFiles\\{ConfigurationManager.TestingData.Get<string>("files:img")}",
-                    "multipart/form-data");
-                vkResponseUpLoadPhotoTask.Wait();
-                AqualityServices.Logger.Info($"The server download photo returned status code {Convert.ToInt32(VkApiUtils.StatusCode)} and the respons lenght = {VkApiUtils.ContentLenght}");
-                VerifyVkApiResponseError();
-                UploadServer uploadServer = vkResponseUpLoadPhotoTask.Result;                
-                string urnSavePhoto = $"photos.saveWallPhoto?" +
-                    $"user_id={ConfigurationManager.Configuration.Get<int>("userId")}" +
-                    $"&server={uploadServer.Server}" +
-                    $"&photo={uploadServer.Photo}" +
-                    $"&hash={uploadServer.Hash}" +
-                    $"{RerequiredParam}";
-                var vkResponsSavePhotoTask = VkApiUtils.GetTAsync<VkResponsePhotoList>(urnSavePhoto);
-                vkResponsSavePhotoTask.Wait();
-                AqualityServices.Logger.Info($"The seved photo request returned status code {Convert.ToInt32(VkApiUtils.StatusCode)} and the respons lenght = {VkApiUtils.ContentLenght}");
-                VerifyVkApiResponseError();
-                VkResponsePhotoList vkResponsePhoto = vkResponsSavePhotoTask.Result;
+            {                
+                WallUploadServer wallUploadServer = GetWallUploadServer();
+                UploadServer uploadServer = UploadedServer(wallUploadServer,$"{Directory.GetCurrentDirectory()}{directoryPath}\\{fileName}");
+                VkResponsePhotoList vkResponsePhoto = SavedPhoto(uploadServer, userId);               
                 return vkResponsePhoto.Photos.FirstOrDefault();
             }
             catch (Exception ex)
@@ -86,6 +62,45 @@ namespace Task9VK
                 AqualityServices.Logger.Fatal("The error appeared during uploading photo by API request.", ex);
                 return photo;
             }
+        }
+
+        public static WallUploadServer GetWallUploadServer()
+        {
+            string urnUploadAddress = $"photos.getWallUploadServer?" +
+                    $"{RerequiredParam}";
+            AqualityServices.Logger.Info($"Get the download photos address by urn : \"{urnUploadAddress}\".");
+            var vkResponseUploadUrlTask = VkApiUtils.GetTAsync<VkResponse>(urnUploadAddress);
+            vkResponseUploadUrlTask.Wait();
+            AqualityServices.Logger.Info($"The photos download address returned status code {Convert.ToInt32(VkApiUtils.StatusCode)} and the respons lenght = {VkApiUtils.ContentLenght}");
+            VerifyVkApiResponseError();
+            return WallUploadServer.Convert(vkResponseUploadUrlTask.Result.Response);
+        }
+
+        public static UploadServer UploadedServer(WallUploadServer wallUploadServer, string image)
+        {
+            var vkResponseUpLoadPhotoTask = VkApiUtils.PostImage<UploadServer>(
+                     wallUploadServer.UploadUrl,
+                    $"{image}",
+                    "multipart/form-data");
+            vkResponseUpLoadPhotoTask.Wait();
+            AqualityServices.Logger.Info($"The server download photo returned status code {Convert.ToInt32(VkApiUtils.StatusCode)} and the respons lenght = {VkApiUtils.ContentLenght}");
+            VerifyVkApiResponseError();
+            return vkResponseUpLoadPhotoTask.Result;
+        }
+
+        public static VkResponsePhotoList SavedPhoto(UploadServer uploadServer, int userId)
+        {
+            string urnSavePhoto = $"photos.saveWallPhoto?" +
+                    $"user_id={userId}" +
+                    $"&server={uploadServer.Server}" +
+                    $"&photo={uploadServer.Photo}" +
+                    $"&hash={uploadServer.Hash}" +
+                    $"{RerequiredParam}";
+            var vkResponsSavePhotoTask = VkApiUtils.GetTAsync<VkResponsePhotoList>(urnSavePhoto);
+            vkResponsSavePhotoTask.Wait();
+            AqualityServices.Logger.Info($"The seved photo request returned status code {Convert.ToInt32(VkApiUtils.StatusCode)} and the respons lenght = {VkApiUtils.ContentLenght}");
+            VerifyVkApiResponseError();
+            return vkResponsSavePhotoTask.Result;
         }
 
         public static Post EditPost(int? postId, Photo uploadPhoto)
@@ -140,12 +155,12 @@ namespace Task9VK
             }
         }
 
-        public static bool IsPostLikeAuthor(int? postId)
+        public static bool IsPostLikeAuthor(int? postId, int userId)
         {
             try
             {
                 string urnIsLike = $"likes.isLiked?" +
-                    $"user_id={ConfigurationManager.Configuration.Get<int>("userId")}" +
+                    $"user_id={userId}" +
                     $"&type=post" +
                     $"&item_id={postId}" +
                     $"{RerequiredParam}";
@@ -202,7 +217,7 @@ namespace Task9VK
         private static void VerifyVkApiResponseError()
         {
             if (!VkApiUtils.IsNullResponseError)
-                AqualityServices.Logger.Error($"Vk API responsed error: {VkApiUtils.VkResponseError.ToString()}.");
+                AqualityServices.Logger.Error($"Vk API responsed error: {VkApiUtils.VkResponseError}.");
         } 
     }
 }

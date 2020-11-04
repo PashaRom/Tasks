@@ -2,7 +2,7 @@
   "browserName": "chrome",
   "isRemote": false,
   "remoteConnectionUrl": "",
-  "isElementHighlightEnabled": false,
+  "isElementHighlightEnabled": true,
 
   "driverSettings": {
     "chrome": {
@@ -85,7 +85,7 @@
   },
   "timeouts": {
     "timeoutImplicit": 0,
-    "timeoutCondition": 120,
+    "timeoutCondition": 10,
     "timeoutScript": 10,
     "timeoutPageLoad": 120,
     "timeoutPollingInterval": 300,

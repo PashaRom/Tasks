@@ -1,12 +1,5 @@
 {
   "url": "https://vk.com/",
   "apiUrl": "https://api.vk.com/method/",
-  "versionVkApi": "5.124",
-  "autorizationData": {
-    "email": "autoperftester@gmail.com",
-    "password": "PuV6j_.2&$m9h?UYY",
-    "token": "b3bdaa0d3fdd9cb132fd4c807ee7de1cc2d9640d3ff303bb47a58cc4d108e683efee02aa184e4fe163de7",
-    "clientId": "6678883"
-  },
-  "userId": "381108928"
+  "versionVkApi": "5.124"  
 }
