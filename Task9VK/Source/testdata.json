@@ -1,0 +1,15 @@
+{
+  "files": {
+    "images": {
+      "upload": {
+        "directory": "\\Source\\TestingFiles",
+        "fileName": "testing_bug.png"
+      },
+      "download": {
+        "directory": "\\Out\\images",
+        "fileName": "downloadImages.png"
+      },
+      "percentDifferentCompare": 30
+    }
+  }
+}
