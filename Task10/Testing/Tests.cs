@@ -7,6 +7,7 @@ using Task10.Testing.PageObject;
 using System.Collections.Generic;
 namespace Task10
 {
+    [TestFixture]
     public class Tests
     {
         private static Dictionary<string, string> testSteps = new Dictionary<string, string>();
