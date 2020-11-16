@@ -1,0 +1,20 @@
+{
+  "unionReporting": {
+    "variant": 2,
+    "pageIsLoadElementText": "Home",
+    "availableProjectLink": "Nexage",
+    "formatResponseGetTests": "xml",
+    "newProjectName": "NewProject47",
+    "newTest": {
+      "name": "Test1",
+      "status": "passed",
+      "method": "Test method 1",
+      "log": "Test log"
+    },
+    "files": {
+      "images": {
+        "percentDifferentCompare": 30
+      }
+    }    
+  }
+}

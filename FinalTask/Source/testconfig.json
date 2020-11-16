@@ -1,0 +1,19 @@
+{
+  "testRail": {
+    "pathUrlBeforeMethod": "https://tr.a1qa.com/index.php?/api/v2/",
+    "caseId": 11345486
+  },
+  "unionReporting": {
+    "webUrl": "http://192.168.99.100:8080/web",
+    "apiUrl": "http://192.168.99.100:8080/api",
+    "cookies": {
+      "tokenName": "token"
+    }
+  },
+  "outDirectory": {
+    "upload": "\\out\\upload",
+    "download": "\\out\\download"
+  },
+  "finalScreenshotName": "{0}ScreenShot.png",
+  "javaScriptsDirectory": "\\Source\\JavaScripts"
+}
