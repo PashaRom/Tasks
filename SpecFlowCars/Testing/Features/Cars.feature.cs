@@ -124,87 +124,87 @@ this.ScenarioInitialize(scenarioInfo);
 #line 10
  testRunner.Then("Research page is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 11
+#line 12
  testRunner.When(string.Format("I search car brand \'{0}\' model \'{1}\' and production year \'{2}\'", firstCarBrand, firstCarModel, firstCarYear), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 12
+#line 13
  testRunner.Then(string.Format("Fields search form have values brand \'{0}\' model \'{1}\' production year \'{2}\'", firstCarBrand, firstCarModel, firstCarYear), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 13
- testRunner.And("The description of car page is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
 #line 14
+  testRunner.And("The description of car page is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 16
  testRunner.When("I click on link CompareTrim", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 15
+#line 17
  testRunner.Then(string.Format("Target options of car page is opened with brand \'{0}\' model \'{1}\' production year" +
                             " \'{2}\'", firstCarBrand, firstCarModel, firstCarYear), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 16
+#line 19
  testRunner.When(string.Format("I save options of car: brand \'{0}\', model \'{1}\', production year, \'{2}\' available" +
                             " engines, transmissions", firstCarBrand, firstCarModel, firstCarYear), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 17
- testRunner.And("I am back to Home page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 18
- testRunner.Then("Home page is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 19
- testRunner.When("I click on the top menu link \'Research\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
 #line 20
- testRunner.Then("Research page is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("I am back to Home page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 21
- testRunner.When(string.Format("I search car brand \'{0}\' model \'{1}\' and production year \'{2}\'", secondCarBrand, secondCarModel, secondCarYear), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 22
- testRunner.Then(string.Format("Fields search form have values brand \'{0}\' model \'{1}\' production year \'{2}\'", secondCarBrand, secondCarModel, secondCarYear), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("Home page is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 23
- testRunner.And("The description of car page is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("I click on the top menu link \'Research\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 24
+ testRunner.Then("Research page is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 26
+ testRunner.When(string.Format("I search car brand \'{0}\' model \'{1}\' and production year \'{2}\'", secondCarBrand, secondCarModel, secondCarYear), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 27
+ testRunner.Then(string.Format("Fields search form have values brand \'{0}\' model \'{1}\' production year \'{2}\'", secondCarBrand, secondCarModel, secondCarYear), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 28
+  testRunner.And("The description of car page is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 30
  testRunner.When("I click on link CompareTrim", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 25
+#line 31
  testRunner.Then(string.Format("Target options of car page is opened with brand \'{0}\' model \'{1}\' production year" +
                             " \'{2}\'", secondCarBrand, secondCarModel, secondCarYear), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 26
+#line 33
  testRunner.When(string.Format("I save options of car: brand \'{0}\', model \'{1}\', production year, \'{2}\' available" +
                             " engines, transmissions", secondCarBrand, secondCarModel, secondCarYear), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 27
- testRunner.And("I click on the top menu link \'Research\' on Trims page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 34
+  testRunner.And("I click on the top menu link \'Research\' on Trims page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 28
+#line 35
  testRunner.Then("Research page is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 29
+#line 37
  testRunner.When("I click on the Side-by-side Comparisons block", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 30
+#line 38
  testRunner.Then("Compare page is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 31
+#line 40
  testRunner.When(string.Format("Choose first car for comparing: brand \'{0}\', model \'{1}\', production year, \'{2}\'", firstCarBrand, firstCarModel, firstCarYear), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 32
+#line 41
  testRunner.Then("Chosen car page is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 33
+#line 43
  testRunner.When(string.Format("I use Add button to add for comparison secomd car: brand \'{0}\', model \'{1}\', prod" +
                             "uction year \'{2}\'", secondCarBrand, secondCarModel, secondCarYear), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 34
+#line 44
  testRunner.Then("Models have been successfully selected for comparison", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 35
+#line 46
  testRunner.When("Check Compare page for both cars", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 36
+#line 47
  testRunner.Then(string.Format("Options of cars on Compare page are equal with options of cars have got previous " +
                             "steps: \'{0}\', \'{1}\', \'{2}\', \'{3}\', \'{4}\', \'{5}\'", firstCarBrand, firstCarModel, firstCarYear, secondCarBrand, secondCarModel, secondCarYear), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
