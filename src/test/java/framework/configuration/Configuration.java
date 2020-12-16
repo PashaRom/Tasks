@@ -1,8 +1,6 @@
 package framework.configuration;
 
-import framework.configuration.models.Config;
-import framework.configuration.models.Data;
-
+import com.jayway.jsonpath.DocumentContext;
 import java.nio.file.Paths;
 
 import static framework.utilities.FileHelper.*;
@@ -12,20 +10,20 @@ public class Configuration {
     private static final String TEST_DATA_FILE_NAME = "testingData.json";
     private static final String TEST_CONFIG_FILE_NAME = "testingConfig.json";
     private static final String TEST_FILE_PATH = "\\src\\test\\java\\resources\\";
-    private static Config testingConfig;
-    private static Data testingData;
+    private static DocumentContext testingConfig;
+    private static DocumentContext testingData;
 
     static {
         testingConfig = convertTestingConfigFromFile();
         testingData = convertTestingDataFromFile();
     }
 
-    private static Config convertTestingConfigFromFile(){
-        return writeFromJsonFile(createPath(TEST_CONFIG_FILE_NAME), Config.class);
+    private static DocumentContext convertTestingConfigFromFile(){
+        return getJsonContextFomFile(createPath(TEST_CONFIG_FILE_NAME));
     }
 
-    private static Data convertTestingDataFromFile (){
-        return writeFromJsonFile(createPath(TEST_DATA_FILE_NAME), Data.class);
+    private static DocumentContext convertTestingDataFromFile (){
+        return getJsonContextFomFile(createPath(TEST_DATA_FILE_NAME));
     }
 
     private static String createPath(String fileName){
@@ -36,11 +34,11 @@ public class Configuration {
         return pathToTestingDataFile.toString();
     }
 
-    public static Config getConfig(){
+    public static DocumentContext getConfig(){
         return testingConfig;
     }
 
-    public static Data getData(){
+    public static DocumentContext getData(){
         return testingData;
     }
 }

@@ -1,4 +1,4 @@
-package framework.restApi;
+package framework.restapi;
 
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,32 +12,31 @@ import org.apache.http.util.EntityUtils;
 import framework.logging.Log;
 
 import java.io.IOException;
-import java.io.InputStream;
 
 public class Request {
     private static int statusCode;
     private static String contentType;
-    public static <T> T get(String url, final Class<T> valueType){
+
+    public static String get(String url){
         CloseableHttpClient httpClient = HttpClients.createDefault();
         try{
-            ObjectMapper objectMapper = new ObjectMapper();
-            HttpGet request = new HttpGet("https://httpbin.org/get");
+            //ObjectMapper objectMapper = new ObjectMapper();
+            HttpGet request = new HttpGet(url);
             request.addHeader(HttpHeaders.CONTENT_TYPE, "application/json");
             CloseableHttpResponse response = httpClient.execute(request);
             statusCode = response.getStatusLine().getStatusCode();
             HttpEntity entity = response.getEntity();
             if (entity != null) {
                 contentType = entity.getContentType().toString();
-                String result = EntityUtils.toString(entity);
-                return objectMapper.readValue(result, valueType);
+                return EntityUtils.toString(entity);
             }
         }
         catch (Exception ex){
             Log.error("An error occurred during to send get request", ex);
         }
-
         return null;
     }
+
     public static <T> T getArray(String url, JavaType valueType) throws IOException {
         CloseableHttpClient httpClient = HttpClients.createDefault();
         try{
@@ -49,9 +48,29 @@ public class Request {
             HttpEntity entity = response.getEntity();
             if (entity != null) {
                 contentType = entity.getContentType().toString();
-                //InputStream st = entity.getContent();
-                //String result = EntityUtils.toString(entity);
                 return objectMapper.readValue(entity.getContent(), valueType);
+            }
+        }
+        catch (Exception ex){
+            Log.error("An error occurred during to send get request", ex);
+        }
+        finally {
+            httpClient.close();
+        }
+        return null;
+    }
+
+    public static String getArray(String url) throws IOException {
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+        try{
+            HttpGet request = new HttpGet(url);
+            request.addHeader(HttpHeaders.CONTENT_TYPE, "application/json");
+            CloseableHttpResponse response = httpClient.execute(request);
+            statusCode = response.getStatusLine().getStatusCode();
+            HttpEntity entity = response.getEntity();
+            if (entity != null) {
+                contentType = entity.getContentType().toString();
+                return EntityUtils.toString(entity);
             }
         }
         catch (Exception ex){

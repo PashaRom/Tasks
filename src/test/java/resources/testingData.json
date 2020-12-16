@@ -1,7 +1,15 @@
 {
-  "post": {
+  "posts": {
     "urn": "/posts",
-    "positiveId": "/99",
-    "negativeId": "/150"
+    "positivePost":{
+      "id" : 99,
+      "userId": 10
+    },
+    "negativeId": {
+      "id": 150
+    },
+    "newPost": {
+      "userId": 1
+    }
   }
 }
