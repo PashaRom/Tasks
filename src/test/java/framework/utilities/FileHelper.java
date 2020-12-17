@@ -1,18 +1,13 @@
 package framework.utilities;
 
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-
-import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
-import framework.logging.Log;
-import org.apache.tools.ant.util.FileUtils;
-
 
 public class FileHelper {
+
     public static <T> T writeFromJsonFile(String pathToFile, final Class<T> valueType){
         ObjectMapper objectMapper = new ObjectMapper();
         try(FileReader reader = new FileReader(pathToFile)){

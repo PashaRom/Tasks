@@ -15,5 +15,6 @@
             <AppenderRef ref="LogToConsole"/>
             <AppenderRef ref="LogToFile"/>
         </Root>
+        <Logger name="com.smt.trimble.poc" level="trace"></Logger>
     </Loggers>
 </Configuration>
