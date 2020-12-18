@@ -22,8 +22,10 @@ public class RestApiTests {
     private static final String USERS = "$.users.";
     private static final String USERS_URN = USERS + "urn";
 
-    @Test(groups = { "first-group" })
-    public void FirstTest(){
+    @Test(groups = { "first-group" },
+            description = "The test check get and post requests to API. Get lists of posts and users," +
+                    "a post and a user, to create the post.")
+    public void checkApi(){
         SoftAssert softAssert = new SoftAssert();
         Log.step(1,"Send a GET request to get list of all posts");
         List<Post> posts = new ArrayList<Post>();
