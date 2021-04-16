@@ -1,0 +1,25 @@
+{
+  "basicAuth": {
+    "url": "https://httpbin.org/basic-auth/user/passwd",
+    "cred": {
+      "login": "user",
+      "password": "passwd"
+    }
+  },
+  "cookie": {
+    "url": "http://example.com/"
+  },
+  "modalWindows": {
+    "url": "http://the-internet.herokuapp.com/javascript_alerts",
+    "screenshotName": "finishScreenshot.png"
+  },
+  "testRail": {
+    "pathUrlBeforeMethod": "https://tr.a1qa.com/index.php?/api/v2/",    
+    "projectId": 140,
+    "suiteId": 0,
+    "caseId": 0,
+    "templateId": 1,
+    "typeId": 2,
+    "priorityId": 4 
+  }
+}
